@@ -1,0 +1,25 @@
+.grp ,.show_grp{
+    border: 2px solid rgb(199, 199, 199);
+    border-radius: 15px;
+}
+.butt{
+    width: 100%;
+}
+.tutt{
+    width: 100%;
+}
+.cutt{
+    width: 100%;
+}
+.putt{
+    width: 100%;
+}
+.all_fields{
+    height: 300px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+::-webkit-scrollbar{
+    display: none;
+}

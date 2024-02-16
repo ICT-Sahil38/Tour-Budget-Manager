@@ -1,0 +1,24 @@
+.group_translate:active{
+    transform: translateY(4px);
+}
+.group-body,.bills_body {
+    overflow-x: hidden;
+    overflow-y: scroll;
+    border: 2px solid black;
+    height: 500px;
+    border-radius: 15px;
+    border-left: none;
+    border-right: none;
+}
+.details_page{
+    /* border: 2px solid black; */
+    height: 600px;
+}
+::-webkit-scrollbar{
+    display: none;
+}
+.paid_button:active{
+    transform: translateY(3px);
+}
+
+
