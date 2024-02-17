@@ -39,9 +39,6 @@ function add_group(){
         let destination = document.getElementById("destination").value;
         let date = document.getElementById("date").value;
 
-        // console.log("Group Name ",grp_name)
-        // console.log("destination ",destination)
-        // console.log("date ",date)
 
         data={
             name : localStorage.getItem('Name'),
@@ -51,7 +48,6 @@ function add_group(){
             destination : destination,
             date : date
         }
-        // console.log("Dta", data)
         let for_return = false;
         fetch("/add_group",{
             method: "POST",
@@ -59,8 +55,6 @@ function add_group(){
             body: JSON.stringify(data)
         }).then(response => response.json())
             .then(data => {
-                console.log(data.success);
-                console.log(data.success,true);
                 if(data.success){
                     toastr.success('Group Added');
                     for_return = true;
@@ -75,7 +69,6 @@ function add_group(){
             .catch(error => {
                 console.log("Error ",error)
             });
-            console.log("Added!");
         return for_return;
     }
     else{
@@ -111,9 +104,6 @@ function add_members(){
         let member_name = document.getElementById('grp_member_name').value;
         let member_group = document.getElementById('group_memberSide_name').value;
 
-        console.log("member name ",member_name);
-        console.log("member group ",member_group);
-
         data={
             name : localStorage.getItem('Name'),
             email : localStorage.getItem('Email'),
@@ -121,7 +111,6 @@ function add_members(){
             member_name : member_name,
             member_grp : member_group
         }
-        // console.log(data);
         let for_return = false;
 
         fetch("/member",{
@@ -130,8 +119,6 @@ function add_members(){
             body: JSON.stringify(data)
         }).then(response => response.json())
             .then(data => {
-                console.log(data.success);
-                console.log(data.success,true);
                 if(data.success){
                     toastr.success("Member Added!");
                     for_return = true;
@@ -145,7 +132,6 @@ function add_members(){
             .catch(e => {
                 console.log("Error: ",e);
             })
-            console.log("Member Added!");
         return for_return;
     }
     else{

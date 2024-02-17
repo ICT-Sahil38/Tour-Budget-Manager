@@ -32,7 +32,6 @@ app.use(session({
     autoRemoveInterval: 60,
   })
 }));
-// console.log('Session secret:', sessionSecret);
 const routes = require("./routes/main");
 
 

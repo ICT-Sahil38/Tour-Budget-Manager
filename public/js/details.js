@@ -1,7 +1,5 @@
 function paid(groups,member){
     let for_return = false;
-    // console.log(member, " member");
-    // console.log(groups, " group");
     x = {
         group:groups,
         member: member,
@@ -9,15 +7,12 @@ function paid(groups,member){
         password: localStorage.getItem('Password'),
         name: localStorage.getItem('Name')
     }
-    // console.log("xdata ",x);
     fetch('/paid',{
         method: 'POST',
         headers:{ 'content-type':'application/json' },
         body: JSON.stringify(x)
     }).then(response => response.json())
         .then(data => {
-            console.log(data.success);
-            console.log(data.success,true);
             if(data.success){
                 toastr.success("Paid Success");
                 for_return = true;
@@ -31,7 +26,6 @@ function paid(groups,member){
         .catch(e => {
             console.log("Error: ",e);
         })
-        // console.log("Member Added!");
     return for_return;
 }
 
@@ -44,15 +38,12 @@ function group_paid(group,member){
         member:member,
         group:group
     }
-    // console.log("x ",x);
     fetch('/group_paid',{
         method: 'POST',
         headers: { 'content-Type': 'application/json' },
         body: JSON.stringify(x)
     }).then(response => response.json())
         .then(data => {
-            console.log(data.success);
-            console.log(data.success,true);
             if(data.success){
                 toastr.success("Paid Success");
                 for_return = true;
@@ -66,7 +57,6 @@ function group_paid(group,member){
         .catch(e => {
             console.log("Error: ",e);
         })
-        // console.log("Member Added!");
     return for_return;
 }
 
@@ -78,7 +68,6 @@ function load_details_in_group(group){
         password: localStorage.getItem('Password'),
         name: localStorage.getItem('Name')
     }
-    // console.log("xdata ",x);
     fetch('/group_data',{
         method: 'POST',
         headers:{ 'content-type':'application/json' },
@@ -90,7 +79,6 @@ function load_details_in_group(group){
             // grpDate=data.groupDate;
             // grpMember=data.member;
             field = data.fields;
-            // console.log(field ,"field");
             s=``;
             if(field){
                 t = field.grp_name; 
@@ -139,7 +127,6 @@ function load_details_in_group(group){
         .catch(e => {
             console.log("Error: ",e);
         })
-        // console.log("Member Added!");
     return for_return;
 }
 
@@ -158,7 +145,6 @@ function delete_group(group){
             body: JSON.stringify(x)
         }).then(response => response.json())
             .then(data => {
-                console.log("deleted category", data.delete_success);
                 if (data.delete_success) {
                     toastr.success("Category deleted successfully!");
                     setTimeout(() => window.location.reload(),2000);

@@ -70,10 +70,7 @@ function validate_Login_Form(){
             body: JSON.stringify(data)
         }).then(response => response.json())
             .then(data => {
-                // console.log(data.message);
-                // console.log(data.success,true);
                 if(data.success){
-                    // console.log("Response", response)
                     localStorage.setItem('Name', `${data.name}`);
                     localStorage.setItem('Email', `${data.email}`);
                     localStorage.setItem('Password', `${data.password}`);
@@ -93,8 +90,6 @@ function validate_Login_Form(){
             .catch(error => {
                 console.error(error);
             });
-        // console.log(data);
-        console.log("Login Successful");
         return for_return;
     }
 }

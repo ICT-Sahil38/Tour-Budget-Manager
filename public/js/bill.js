@@ -60,7 +60,6 @@ function add_bill(){
             group_bill : group_bill,
             amount:restro_bill
         }
-        console.log(data);
         let for_return = false;
         fetch("/add_bill",{
             method : 'POST',
@@ -68,8 +67,6 @@ function add_bill(){
             body : JSON.stringify(data)
         }).then(response => response.json())
             .then(data => {
-                console.log(data.success);
-                console.log(data.success,true);
                 if(data.success){
                     toastr.success("Bill Added");
                     for_return = true;
@@ -83,7 +80,6 @@ function add_bill(){
             }).catch(e => {
                 console.log("Error: ",e);
             })
-            console.log("Bill Added!");
         return for_return;
     }
 }

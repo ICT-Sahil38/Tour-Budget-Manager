@@ -92,7 +92,6 @@ function validate_Form(event) {
             email: document.getElementById("get_email").value,
             password: document.getElementById("get_password").value,
         };
-        console.log("Hello");
         alert("yup");
         fetch("/signup_check",{
             method : "POST",
@@ -100,10 +99,7 @@ function validate_Form(event) {
             body: JSON.stringify(data)
         }).then(response => response.json())
             .then(data => {
-                console.log("This is data.message ", data.message);
-                console.log( "This is data.success ", data.success,true);
                 if(data.success){
-                    // console.log("Response", response)
                     localStorage.setItem('Name', `${data.name}`);
                     localStorage.setItem('Email', `${data.email}`);
                     localStorage.setItem('Password', `${data.password}`);
@@ -112,7 +108,6 @@ function validate_Form(event) {
                     localStorage.setItem('nav_active', "home"); 
                     document.getElementById("empty1").action = action;
                     document.getElementById("empty1").submit();
-                    console.log("Submitted Successfully jenbgfuilb3fnzefuvssbgsiufebvg4")
                     for_return = true;
                 }
                 else {

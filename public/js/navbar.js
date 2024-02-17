@@ -10,7 +10,6 @@ document.getElementById("logout").addEventListener("click", () => {
         body: JSON.stringify(data)
     }).then(response => response.json())
         .then(data => {
-            console.log(data.logout_success, " data.logout_success");
             if(data.logout_success){
                 localStorage.removeItem("Email");
                 localStorage.removeItem("Name");
@@ -49,7 +48,6 @@ document.getElementById("details").addEventListener("click", () => {
 
 window.addEventListener("load", () => {
     let elements = document.getElementsByClassName("active");
-    console.log(elements);
     for (var i = 0; i < elements.length; i++) {
         elements[i].classList.remove('active');
     }

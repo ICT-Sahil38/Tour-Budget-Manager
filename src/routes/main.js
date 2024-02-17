@@ -18,13 +18,11 @@ routes.post("/login_check",jsonparser,async (req,res)=>{
         email :null,
         password :null
     };
-    // console.log("Req emial : ",req.body.email);
     try{
         await client.connect();
         if(req.body.email){
             const item = await client.db(process.env.DB_NAME).collection(process.env.AUTH_COLLECTION).findOne({email :req.body.email});
             if(req.body.password === item.password){
-                // console.log("item ",item);
                 login_success = true;
                 success_data.name = item.name;
                 success_data.email = item.email;
@@ -33,8 +31,6 @@ routes.post("/login_check",jsonparser,async (req,res)=>{
                 req.session.name = item.name;
                 req.session.email = item.email;
                 req.session.password = item.password;
-
-                // console.log("login session ",req.session.name);
             }
         }
     }
@@ -51,7 +47,6 @@ routes.post("/login_check",jsonparser,async (req,res)=>{
         password: success_data.password,
         name: success_data.name
     };
-    // console.log(data);
     res.send(data);
 })
 
@@ -67,28 +62,21 @@ routes.post('/signup_check' , jsonparser, async (req,res) => {
         password : req.body.password
     }
     try{
-        // console.log("For Insert", for_insert);
         await client.connect();
         if(req.body.email){
-            console.log("Hello World!!"); 
             const item = await client.db(process.env.DB_NAME).collection(process.env.AUTH_COLLECTION).insertOne(for_insert);
-            // console.log("Item", item);
-            // console.log("Item ack", item.acknowledged);
             if(item.acknowledged){
                 const for_insert2 = {
                     _id : "Group",
                     group:["void"]
                 };
                 const status = await client.db(process.env.DB_NAME).collection(req.body.email).insertOne(for_insert2);
-                console.log(status);
                 if(status.acknowledged){
-                    // console.log(item.acknowledged);
                     signup_success = item.acknowledged;
                     req.session.email = req.body.email;
                     req.session.name = req.body.name;
                     req.session.password = req.body.password;
                 }
-                // console.log('signup_success ', signup_success);
             }
         }
     }
@@ -96,7 +84,6 @@ routes.post('/signup_check' , jsonparser, async (req,res) => {
         console.log("Errorrrr ",e);
     }
     finally {
-        // console.log("Closing session")
         await client.close();
     }
     data = {
@@ -106,7 +93,6 @@ routes.post('/signup_check' , jsonparser, async (req,res) => {
         password: for_insert.password,
         name: for_insert.name
     };
-    // console.log(data);
     res.send(data);
 })
 
@@ -126,11 +112,9 @@ routes.get("/home",async (req, res) => {
             if(req.session.password === item.password){
                 req_for_home = true;
                 leader = item.name;
-                // console.log(leader);
 
                 let group_ = await client.db(process.env.DB_NAME).collection(item.email).findOne({_id:"Group"});
                 let fields = await client.db(process.env.DB_NAME).collection(item.email).find({_id:{$ne:"Group"}}).toArray();
-                // console.log(fields.length);
                 if(fields.length === 0){
                     res.render("home", { email: req.session.email, leader: leader, group: Group, fieldsEmpty: true, message:"Create Group First" });
                     return;
@@ -157,15 +141,9 @@ routes.get("/home",async (req, res) => {
                                 member_status : member.amount_status
                             }
                         });
-                // console.log(dateObject, " dateObject");
 
                     }
-                    // let field_member = fields.grp_members;
                 }
-                
-                // console.log(fields, "fields");
-                // console.log(group_, "group_");
-                // console.log(members,"members");
                 Group = group_.group.filter(group => group !== "void");
             }
         }
@@ -183,15 +161,10 @@ routes.post("/add_group",jsonparser,async (req,res) => {
     let add_success = false;
     try{
         await client.connect();
-        // console.log("Email", req.body.email);
         if(req.body.email) {
             const item = await client.db(process.env.DB_NAME).collection(process.env.AUTH_COLLECTION).findOne({email:req.body.email});
-            // console.log("Email ", item.email);
-            // console.log("item ",item);
             if(req.body.password === item.password){
-                // console.log(req.body.group_name)
                 const status = await client.db(process.env.DB_NAME).collection(req.body.email).findOne({_id:"Group" , group:req.body.group_name});
-                // console.log(status);
                 if(status){
                     add_success = false;
                 }
@@ -211,7 +184,7 @@ routes.post("/add_group",jsonparser,async (req,res) => {
             }
         }
         else{
-            console.log("eMAIL NOT found: " , req.body.email);
+            toastr.error("EMAIL NOT found: ");
         }
     }
     catch(e){
@@ -230,7 +203,6 @@ routes.post("/add_group",jsonparser,async (req,res) => {
 routes.post('/member',jsonparser,async (req,res) => {
     let add_success = false;
     try{
-        // console.log("Yess");
         await client.connect();
         if(req.body.email){
             const item = await client.db(process.env.DB_NAME).collection(process.env.AUTH_COLLECTION).findOne({email:req.body.email});
@@ -240,19 +212,15 @@ routes.post('/member',jsonparser,async (req,res) => {
                     member_amount : 0,
                     amount_status : "unpaid"
                 };
-                console.log(entry);
                 const filter = {
                     grp_name : req.body.member_grp
                 };
-                console.log(filter);
                 const update = {
                     $push : {
                         grp_members :entry
                     }
                 };
-                // console.log("yes there")
                 const result = await client.db(process.env.DB_NAME).collection(req.body.email).updateOne(filter,update);
-                // console.log(result);
                 add_success = true;
             }
         }
@@ -276,27 +244,20 @@ routes.post('/add_bill', jsonparser , async (req,res)=>{
         await client.connect();
         if(req.body.email){
             const item = await client.db(process.env.DB_NAME).collection(process.env.AUTH_COLLECTION).findOne({email:req.body.email});
-            console.log(item);
             if(item.password === req.body.password){
                 const count_bill = await client.db(process.env.DB_NAME).collection(req.body.email).findOne({grp_name : req.body.group_bill});
                 let no_people = count_bill.grp_members.length;
-                console.log("Number of People: ",no_people);
-                console.log("type of People: ",typeof(no_people));
                 const final_amount = Math.ceil(req.body.amount/no_people);
-                console.log("Final Amount: ",final_amount);
 
                 const result = await client.db(process.env.DB_NAME).collection(req.body.email);
                 const docToUpdate = await result.find({ grp_name: req.body.group_bill }).toArray();
-                // console.log("docToUpdate ",docToUpdate);
                 for(const doc of docToUpdate){
                     const updateMember = doc.grp_members.map(member => ({
                         ...member,
                         member_amount: member.member_amount + final_amount
                     }));
                     await result.updateOne({ grp_name: req.body.group_bill },{ $set : { grp_members: updateMember } })
-                    console.log(updateMember);
                 }
-                // console.log(result);
                 add_success = true;
             }
         }
@@ -319,7 +280,6 @@ routes.post('/logout', jsonparser, async (req, res) => {
     try {
         req.session.destroy();
         logout_success = true;
-        console.log("logout_success", logout_success);
     } catch (e) {
         console.error(e);
         logout_success = false;
@@ -423,7 +383,6 @@ routes.post('/group_data', jsonparser, async (req, res) => {
                 // data.member = member;
                 data.fields=fields;
             }
-            console.log("data ",data)
         }
     } catch (e) {
         console.error(e);
@@ -517,13 +476,10 @@ routes.post('/delete_group',jsonparser,async (req,res) => {
                     }
                 };
                 const status = await client.db(process.env.DB_NAME).collection(req.body.email).deleteOne(filter);
-                console.log(status);
                 const grp_array = await client.db(process.env.DB_NAME).collection(req.body.email).updateOne({_id:"Group"},pull_group);
-                console.log(grp_array);
                 delete_success = true;
             }
         }
-        console.log(delete_success);
     }
     catch (e) {
         console.error(e);
