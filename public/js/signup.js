@@ -92,7 +92,6 @@ function validate_Form(event) {
             email: document.getElementById("get_email").value,
             password: document.getElementById("get_password").value,
         };
-        alert("yup");
         fetch("/signup_check",{
             method : "POST",
             headers:{"Content-Type": "application/json"},
@@ -114,7 +113,6 @@ function validate_Form(event) {
                     submitError.style.display = "block";
                     submitError.innerHTML = "Email or Password Invalid!";
                     setTimeout(function () { submitError.style.display = "none" }, 3000);
-                    alert("Yes I'm Here at this point!!!");
                 }
             })
             .catch(error => {
