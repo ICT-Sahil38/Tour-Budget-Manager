@@ -10,6 +10,9 @@ const client = new MongoClient(process.env.URL);
 routes.get("/", async (req, res) => {
     res.render("login");
 });
+routes.get("/alphabot",async (req, res) => {
+    res.render("alphabot");
+})
 
 routes.post("/login_check",jsonparser,async (req,res)=>{
     let login_success = false;
